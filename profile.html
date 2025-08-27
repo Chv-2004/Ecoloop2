@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile - EcoLoop</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="profile-styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo" onclick="window.location.href='index.html'" style="cursor: pointer;">
+                <i class="fas fa-recycle"></i>
+                <span>EcoLoop</span>
+            </div>
+            <div class="nav-auth" id="navAuth">
+                </div>
+        </div>
+    </nav>
+
+    <div class="profile-container">
+        <div class="profile-card">
+            <div class="profile-header">
+                <div class="profile-avatar">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <h2 id="profile-name">Loading...</h2>
+                <p id="profile-email">Loading...</p>
+            </div>
+            <div class="profile-body">
+                <h3>My Activity</h3>
+                <div class="activity-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">0</span>
+                        <span class="stat-label">Projects Submitted</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">0</span>
+                        <span class="stat-label">Comments Made</span>
+                    </div>
+                </div>
+                <button class="btn btn-primary btn-full" style="margin-top: 1rem;" disabled>
+                    <i class="fas fa-edit"></i>
+                    Edit Profile (Coming Soon)
+                </button>
+            </div>
+        </div>
+
+        <div class="profile-projects">
+            <h3>My Submitted Projects</h3>
+            <div id="user-projects-list">
+                </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const user = JSON.parse(localStorage.getItem('ecoloopUser') || sessionStorage.getItem('ecoloopUser'));
+
+            if (!user) {
+                showToast('You must be logged in to view this page.', 'error');
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 2000);
+                return;
+            }
+
+            document.getElementById('profile-name').textContent = user.name;
+            document.getElementById('profile-email').textContent = user.email;
+
+            const navAuth = document.getElementById('navAuth');
+            navAuth.innerHTML = `
+                <div class="user-menu">
+                    <button class="btn btn-secondary" onclick="window.location.href='index.html'"><i class="fas fa-home"></i> Home</button>
+                    <button class="btn btn-secondary" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                </div>
+            `;
+
+            const allUserProjects = JSON.parse(localStorage.getItem('userProjects')) || [];
+            const myProjects = allUserProjects.filter(p => p.submittedBy === user.email);
+            
+            const projectsSubmittedSpan = document.querySelector('.stat-item .stat-number');
+            if (projectsSubmittedSpan) {
+                projectsSubmittedSpan.textContent = myProjects.length;
+            }
+
+            populateMyProjects(myProjects);
+        });
+
+        function populateMyProjects(projects) {
+            const projectsList = document.getElementById('user-projects-list');
+
+            if (projects.length === 0) {
+                projectsList.innerHTML = '<p class="no-projects-msg">You have not submitted any projects yet.</p>';
+                return;
+            }
+
+            projects.forEach(project => {
+                const projectItem = document.createElement('div');
+                projectItem.className = 'user-project-item';
+                const statusClass = project.status === 'approved' ? 'status-approved' : 
+                                    project.status === 'rejected' ? 'status-rejected' : 'status-pending';
+
+                projectItem.innerHTML = `
+                    <div class="project-info">
+                        <h4>${project.title}</h4>
+                        <p>Submitted on: ${project.submittedOn}</p>
+                    </div>
+                    <div class="project-status-tag ${statusClass}">
+                        ${project.status}
+                    </div>
+                `;
+                projectsList.appendChild(projectItem);
+            });
+        }
+    </script>
+</body>
+</html>

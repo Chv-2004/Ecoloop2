@@ -1,0 +1,156 @@
+/* admin-styles.css */
+
+.admin-container {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    font-family: 'Inter', sans-serif;
+}
+
+.admin-section {
+    margin-bottom: 20px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.admin-section h2 {
+    color: #333;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 5px;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+.stat-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+.stat-card i {
+    font-size: 2em;
+    margin-bottom: 10px;
+    color: #4CAF50; /* Green color for visual appeal */
+}
+
+/* Project Approval List Styles */
+#project-list {
+    margin-top: 20px;
+}
+
+.project-item {
+    display: grid;
+    grid-template-columns: 2.5fr 2fr 1fr 1.5fr 1.5fr; /* 5 columns for new layout */
+    align-items: center;
+    padding: 15px;
+    background-color: white;
+    border-bottom: 1px solid #e0e0e0;
+    gap: 15px;
+}
+
+.project-item:last-of-type {
+    border-bottom: none;
+    border-radius: 0 0 8px 8px;
+}
+
+.project-header {
+    font-weight: 600;
+    color: #333;
+    background-color: #f0f0f0;
+    border-radius: 8px 8px 0 0;
+    padding: 10px 15px;
+    border-bottom: 2px solid #ddd;
+}
+
+.project-title {
+    font-weight: 500;
+}
+
+.project-user, .project-date {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.project-status {
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 20px;
+    text-align: center;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.status-pending {
+    background-color: #fff0c2; /* Lighter Amber */
+    color: #a67c00;
+}
+
+.status-approved {
+    background-color: #c8e6c9; /* Lighter Green */
+    color: #1b5e20;
+}
+
+.status-rejected {
+    background-color: #ffcdd2; /* Lighter Red */
+    color: #c62828;
+}
+
+.project-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+/* User Management List Styles */
+#user-list {
+    margin-top: 20px;
+}
+
+.user-item {
+    display: grid;
+    grid-template-columns: 1.5fr 2fr 1fr;
+    align-items: center;
+    padding: 15px;
+    background-color: white;
+    border-bottom: 1px solid #e0e0e0;
+    gap: 15px;
+}
+
+.user-item:last-of-type {
+    border-bottom: none;
+    border-radius: 0 0 8px 8px;
+}
+
+.user-header {
+    font-weight: 600;
+    color: #333;
+    background-color: #f0f0f0;
+    border-radius: 8px 8px 0 0;
+    padding: 10px 15px;
+    border-bottom: 2px solid #ddd;
+}
+
+.user-name {
+    font-weight: 500;
+}
+
+.user-email {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.user-projects {
+    text-align: center;
+    font-weight: 600;
+    color: #2E7D32;
+}

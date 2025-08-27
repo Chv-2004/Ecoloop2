@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit a Project - EcoLoop</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="profile-styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo" onclick="window.location.href='index.html'" style="cursor: pointer;">
+                <i class="fas fa-recycle"></i>
+                <span>EcoLoop</span>
+            </div>
+            <div class="nav-auth" id="navAuth">
+                </div>
+        </div>
+    </nav>
+
+    <div class="profile-container">
+        <div class="profile-projects">
+            <div id="submissionFormSection">
+                <h3>Submit Your Project</h3>
+                <p>Share your waste repurposing creation with the EcoLoop community!</p>
+                <form id="projectSubmissionForm">
+                    <div class="form-group">
+                        <label for="projectTitle">Project Title</label>
+                        <input type="text" id="projectTitle" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="projectCategory">Category</label>
+                        <select id="projectCategory" required>
+                            <option value="">Select a category</option>
+                            <option value="plastic">Plastic</option>
+                            <option value="metal">Metal</option>
+                            <option value="paper">Paper</option>
+                            <option value="organic">Organic</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="projectDescription">Short Description</label>
+                        <textarea id="projectDescription" rows="3" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="projectVideo">YouTube Video Link</label>
+                        <input type="url" id="projectVideo" placeholder="https://www.youtube.com/watch?v=..." required>
+                    </div>
+                    <div class="form-group">
+                        <label for="projectMaterials">Materials (comma-separated)</label>
+                        <input type="text" id="projectMaterials" placeholder="e.g., Plastic bottles, scissors, glue" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="projectSteps">Step-by-Step Instructions (one step per line)</label>
+                        <textarea id="projectSteps" rows="6" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">
+                        <i class="fas fa-upload"></i>
+                        Submit for Approval
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const user = JSON.parse(localStorage.getItem('ecoloopUser') || sessionStorage.getItem('ecoloopUser'));
+            const navAuth = document.getElementById('navAuth');
+
+            if (!user) {
+                showToast('You must be logged in to submit a project.', 'error');
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 2000);
+                return;
+            }
+
+            navAuth.innerHTML = `
+                <div class="user-menu">
+                    <button class="btn btn-secondary" onclick="window.location.href='index.html'"><i class="fas fa-home"></i> Home</button>
+                    <button class="btn btn-secondary" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                </div>
+            `;
+
+            document.getElementById('projectSubmissionForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                const newProject = {
+                    id: Date.now(),
+                    title: document.getElementById('projectTitle').value,
+                    description: document.getElementById('projectDescription').value,
+                    category: document.getElementById('projectCategory').value,
+                    videoUrl: document.getElementById('projectVideo').value,
+                    materials: document.getElementById('projectMaterials').value.split(',').map(s => s.trim()),
+                    steps: document.getElementById('projectSteps').value.split('\n').map(s => s.trim()).filter(s => s),
+                    submittedBy: user.email,
+                    submittedOn: new Date().toLocaleDateString(),
+                    status: 'pending',
+                    rating: 0,
+                    comments: []
+                };
+
+                let userProjects = JSON.parse(localStorage.getItem('userProjects')) || [];
+                userProjects.push(newProject);
+                localStorage.setItem('userProjects', JSON.stringify(userProjects));
+
+                showToast('Project submitted successfully! It is now pending admin approval.', 'success');
+                this.reset();
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 2000);
+            });
+        });
+    </script>
+</body>
+</html>

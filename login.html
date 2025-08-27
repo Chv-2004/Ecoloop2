@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - EcoLoop</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="login-styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="login-body">
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-recycle"></i>
+                <span>EcoLoop</span>
+            </div>
+            <div class="nav-auth">
+                <button class="btn btn-login active" onclick="window.location.href='login.html'">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Login
+                </button>
+                <button class="btn btn-secondary" onclick="window.location.href='index.html'">
+                    <i class="fas fa-home"></i>
+                    Home
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Login Container -->
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <div class="logo-section">
+                    <i class="fas fa-recycle"></i>
+                    <h1>EcoLoop</h1>
+                </div>
+                <p>Welcome back! Please sign in to your account.</p>
+            </div>
+
+            <!-- Login Type Selector -->
+            <div class="login-type-selector">
+                <button class="type-btn active" onclick="switchLoginType('user')">
+                    <i class="fas fa-user"></i>
+                    User Login
+                </button>
+                <button class="type-btn" onclick="switchLoginType('admin')">
+                    <i class="fas fa-user-shield"></i>
+                    Admin Login
+                </button>
+            </div>
+
+            <!-- User Login Form -->
+            <form id="userLoginForm" class="login-form active">
+                <div class="form-group">
+                    <label for="userEmail">Email Address</label>
+                    <div class="input-group">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="userEmail" placeholder="Enter your email" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="userPassword">Password</label>
+                    <div class="input-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="userPassword" placeholder="Enter your password" required>
+                        <i class="fas fa-eye toggle-password" onclick="togglePassword('userPassword')"></i>
+                    </div>
+                </div>
+                <div class="form-options">
+                    <label class="checkbox-container">
+                        <input type="checkbox" id="rememberUser">
+                        <span class="checkmark"></span>
+                        Remember me
+                    </label>
+                    <a href="#" class="forgot-password">Forgot Password?</a>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Sign In
+                </button>
+                <div class="signup-link">
+                    Don't have an account? <a href="#" onclick="showSignupForm()">Sign up</a>
+                </div>
+            </form>
+
+            <!-- Admin Login Form -->
+            <form id="adminLoginForm" class="login-form">
+                <div class="form-group">
+                    <label for="adminUsername">Username</label>
+                    <div class="input-group">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="adminUsername" placeholder="Enter admin username" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="adminPassword">Password</label>
+                    <div class="input-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="adminPassword" placeholder="Enter admin password" required>
+                        <i class="fas fa-eye toggle-password" onclick="togglePassword('adminPassword')"></i>
+                    </div>
+                </div>
+                <div class="form-options">
+                    <label class="checkbox-container">
+                        <input type="checkbox" id="rememberAdmin">
+                        <span class="checkmark"></span>
+                        Remember me
+                    </label>
+                    <a href="#" class="forgot-password">Forgot Password?</a>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">
+                    <i class="fas fa-user-shield"></i>
+                    Admin Login
+                </button>
+            </form>
+
+            <!-- Signup Form -->
+            <form id="signupForm" class="login-form">
+                <div class="form-group">
+                    <label for="signupName">Full Name</label>
+                    <div class="input-group">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="signupName" placeholder="Enter your full name" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="signupEmail">Email Address</label>
+                    <div class="input-group">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="signupEmail" placeholder="Enter your email" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="signupPassword">Password</label>
+                    <div class="input-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="signupPassword" placeholder="Create a password" required>
+                        <i class="fas fa-eye toggle-password" onclick="togglePassword('signupPassword')"></i>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="signupConfirmPassword">Confirm Password</label>
+                    <div class="input-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="signupConfirmPassword" placeholder="Confirm your password" required>
+                        <i class="fas fa-eye toggle-password" onclick="togglePassword('signupConfirmPassword')"></i>
+                    </div>
+                </div>
+                <div class="form-options">
+                    <label class="checkbox-container">
+                        <input type="checkbox" id="agreeTerms" required>
+                        <span class="checkmark"></span>
+                        I agree to the <a href="#">Terms & Conditions</a>
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">
+                    <i class="fas fa-user-plus"></i>
+                    Create Account
+                </button>
+                <div class="signup-link">
+                    Already have an account? <a href="#" onclick="showLoginForm()">Sign in</a>
+                </div>
+            </form>
+        </div>
+
+        <!-- Login Background -->
+        <div class="login-background">
+            <div class="eco-animation">
+                <i class="fas fa-recycle"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success/Error Messages -->
+    <div id="messageContainer" class="message-container"></div>
+
+    <script src="script.js"></script>
+    <script src="login.js"></script>
+</body>
+</html> 

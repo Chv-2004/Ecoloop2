@@ -1,0 +1,138 @@
+/* profile-styles.css */
+
+body {
+    background-color: #f8f9fa;
+}
+
+.profile-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 120px 20px 40px;
+    min-height: 100vh;
+}
+
+.profile-card {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
+    overflow: hidden;
+    text-align: center;
+}
+
+.profile-header {
+    background: linear-gradient(135deg, #E8F5E8 0%, #C8E6C9 100%);
+    padding: 40px 20px;
+}
+
+.profile-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: white;
+    margin: 0 auto 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    border: 4px solid white;
+}
+
+.profile-avatar i {
+    font-size: 4rem;
+    color: #2E7D32;
+}
+
+.profile-header h2 {
+    color: #1B5E20;
+    font-size: 1.8rem;
+    margin: 0;
+}
+
+.profile-header p {
+    color: #555;
+    font-size: 1rem;
+}
+
+.profile-body {
+    padding: 30px;
+}
+
+.profile-body h3 {
+    color: #333;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 0.5rem;
+}
+
+.activity-stats {
+    display: flex;
+    justify-content: space-around;
+    gap: 1rem;
+}
+
+.btn-full {
+    width: 100%;
+    justify-content: center;
+}
+
+.profile-projects {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 700px;
+    margin-top: 2rem;
+    padding: 30px;
+}
+
+.profile-projects h3 {
+    color: #333;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 0.5rem;
+    text-align: center;
+}
+
+.user-project-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.user-project-item:last-child {
+    border-bottom: none;
+}
+
+.project-info h4 {
+    font-weight: 600;
+    color: #1B5E20;
+    margin-bottom: 0.25rem;
+}
+
+.project-info p {
+    color: #666;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.project-status-tag {
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+
+.no-projects-msg {
+    text-align: center;
+    color: #888;
+    padding: 2rem;
+}

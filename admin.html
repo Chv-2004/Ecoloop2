@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - EcoLoop</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="admin-styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-recycle"></i>
+                <span>EcoLoop Admin</span>
+            </div>
+            <div class="nav-auth">
+                <button class="btn btn-secondary" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Logout
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="admin-container">
+        <section id="user-stats" class="admin-section">
+            <h2>Dashboard Statistics</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <i class="fas fa-users"></i>
+                    <span id="total-users">Loading...</span>
+                    <p>Total Users</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="project-approval" class="admin-section">
+            <h2>Project Approval Queue</h2>
+            <p>Review and approve user-submitted projects.</p>
+            <div id="project-list-pending">
+                <div class="project-item project-header">
+                    <div class="project-title">Project Title</div>
+                    <div class="project-user">Submitted By</div>
+                    <div class="project-date">Date</div>
+                    <div class="project-actions">Actions</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="approved-projects" class="admin-section">
+            <h2>Approved Projects</h2>
+            <p>Projects that have been approved and are live on the website.</p>
+            <div id="project-list-approved">
+                <div class="project-item project-header">
+                    <div class="project-title">Project Title</div>
+                    <div class="project-user">Submitted By</div>
+                    <div class="project-date">Date</div>
+                    <div class="project-actions">Actions</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="user-management" class="admin-section">
+            <h2>User Management</h2>
+            <p>View all registered users on the platform.</p>
+            <div id="user-list">
+                <div class="user-item user-header">
+                    <div class="user-name">Name</div>
+                    <div class="user-email">Email</div>
+                    <div class="user-projects">Projects Submitted</div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const users = JSON.parse(localStorage.getItem('ecoloopUsers')) || [];
+
+            document.getElementById('total-users').innerText = users.length;
+            
+            populateUserList(users);
+
+            const userProjects = JSON.parse(localStorage.getItem('userProjects')) || [];
+            populateProjectList(userProjects);
+        });
+
+        function populateUserList(userData) {
+            const userList = document.getElementById('user-list');
+
+            const allUserProjects = JSON.parse(localStorage.getItem('userProjects')) || [];
+
+            if (userData.length === 0) {
+                userList.innerHTML += '<p style="padding: 1rem;">No registered users found.</p>';
+                return;
+            }
+
+            userList.querySelectorAll('.user-item:not(.user-header)').forEach(item => item.remove());
+
+            userData.forEach(user => {
+                const userItem = document.createElement('div');
+                userItem.className = 'user-item';
+
+                const projectCount = allUserProjects.filter(p => p.submittedBy === user.email).length;
+                userItem.innerHTML = `
+                    <div class="user-name">${user.name}</div>
+                    <div class="user-email">${user.email}</div>
+                    <div class="user-projects">${projectCount}</div>
+                `;
+                userList.appendChild(userItem);
+            });
+        }
+
+        function populateProjectList(projectData) {
+            const pendingList = document.getElementById('project-list-pending');
+            const approvedList = document.getElementById('project-list-approved');
+
+            const pendingProjects = projectData.filter(p => p.status === 'pending');
+            const approvedProjects = projectData.filter(p => p.status === 'approved');
+
+            pendingList.querySelectorAll('.project-item:not(.project-header)').forEach(item => item.remove());
+            approvedList.querySelectorAll('.project-item:not(.project-header)').forEach(item => item.remove());
+
+            if (pendingProjects.length === 0) {
+                pendingList.innerHTML += '<p style="padding: 1rem;">No projects pending approval.</p>';
+            } else {
+                pendingProjects.forEach(project => {
+                    const projectItem = document.createElement('div');
+                    projectItem.className = 'project-item';
+                    projectItem.dataset.projectId = project.id;
+                    projectItem.innerHTML = `
+                        <div class="project-title" title="${project.description}">${project.title}</div>
+                        <div class="project-user">${project.submittedBy}</div>
+                        <div class="project-date">${project.submittedOn}</div>
+                        <div class="project-actions">
+                            <button class="btn btn-primary btn-small" onclick="handleApproval(${project.id}, 'approved')">Approve</button>
+                            <button class="btn btn-reject btn-small" onclick="handleApproval(${project.id}, 'rejected')">Reject</button>
+                        </div>
+                    `;
+                    pendingList.appendChild(projectItem);
+                });
+            }
+            
+            if (approvedProjects.length === 0) {
+                approvedList.innerHTML += '<p style="padding: 1rem;">No projects approved yet.</p>';
+            } else {
+                approvedProjects.forEach(project => {
+                    const projectItem = document.createElement('div');
+                    projectItem.className = 'project-item';
+                    projectItem.dataset.projectId = project.id;
+                    projectItem.innerHTML = `
+                        <div class="project-title" title="${project.description}">${project.title}</div>
+                        <div class="project-user">${project.submittedBy}</div>
+                        <div class="project-date">${project.submittedOn}</div>
+                        <div class="project-actions">
+                            <button class="btn btn-reject btn-small" onclick="handleApproval(${project.id}, 'rejected')">Reject</button>
+                        </div>
+                    `;
+                    approvedList.appendChild(projectItem);
+                });
+            }
+        }
+
+        function handleApproval(projectId, newStatus) {
+            let userProjects = JSON.parse(localStorage.getItem('userProjects')) || [];
+            const projectIndex = userProjects.findIndex(p => p.id == projectId);
+
+            if (projectIndex === -1) return;
+
+            userProjects[projectIndex].status = newStatus;
+            localStorage.setItem('userProjects', JSON.stringify(userProjects));
+
+            populateProjectList(userProjects);
+            showToast(`Project has been ${newStatus}.`, 'success');
+        }
+    </script>
+</body>
+</html>
